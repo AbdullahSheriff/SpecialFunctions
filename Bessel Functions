@@ -1,0 +1,100 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.special import jv
+
+ 
+
+
+def J(m,x): 
+    i=0
+    def F(phi):
+        return (1/np.pi)*(np.cos(m*phi-(x)*np.sin(phi)))
+    while i<=600:
+        N = 1000
+        a = 0.0
+        b = np.pi                      
+        h = (b-a)/N
+        M=1
+        S=F(a)+F(b)
+        Simp1=0
+        Simp2=0
+        i=i+1
+        while M<(N/2):
+            Simp1=F(a+(2*M-1)*h)
+            S=S+4*Simp1
+            M=M+1
+            q=1
+        while q<((N/2)-1):
+            Simp2=2*F(a+2*h*q)
+            S=S+Simp2
+            q=q+1
+           
+        S=S*h/3
+        i=i+1
+        return S  
+    
+ReZ=np.arange(-10,10,0.1)      
+
+
+plt.figure(1)
+plt.plot(ReZ,(J(0,ReZ)),label='m=0',c='magenta')
+plt.plot(ReZ,(J(1,ReZ)),label='m=1',c='lime')
+plt.plot(ReZ,(J(2,ReZ)),label='m=2',c='yellow')
+plt.plot(ReZ,(J(3,ReZ)),label='m=3',c='orange')
+plt.plot(ReZ,(J(4,ReZ)),label='m=4',c='blue')
+plt.plot(ReZ,(J(5,ReZ)),label='m=5',c='aqua')   
+plt.xlabel('x')
+plt.ylabel('$Jm$(x)')      
+plt.title('Bessle Functions from m ranging from 0 to 5')
+plt.legend()   
+
+
+plt.figure(2)
+plt.plot(ReZ,(J(5,ReZ)),label='m=5',c='magenta')
+plt.plot(ReZ,(J(6,ReZ)),label='m=6',c='lime')
+plt.plot(ReZ,(J(7,ReZ)),label='m=7',c='yellow')
+plt.plot(ReZ,(J(8,ReZ)),label='m=8',c='orange')
+plt.plot(ReZ,(J(9,ReZ)),label='m=9',c='blue')
+plt.plot(ReZ,(J(10,ReZ)),label='m=10',c='aqua')
+plt.xlabel('x')
+plt.ylabel('$Jm$(x)')            
+plt.title('Bessle Functions from m ranging from 5 to 10')
+plt.legend()   
+
+
+  
+plt.figure(3)
+plt.plot(ReZ,(jv(0,ReZ)),label='m=0',c='magenta')
+plt.plot(ReZ,(jv(1,ReZ)),label='m=1',c='lime')
+plt.plot(ReZ,(jv(2,ReZ)),label='m=2',c='yellow')
+plt.plot(ReZ,(jv(3,ReZ)),label='m=3',c='orange')
+plt.plot(ReZ,(jv(4,ReZ)),label='m=4',c='blue')
+plt.plot(ReZ,(jv(5,ReZ)),label='m=5',c='aqua')   
+plt.xlabel('x')
+plt.ylabel('$Jm$(x)')      
+plt.title('Bessle Functions from m ranging from 0 to 5 (scipy)')
+plt.legend()   
+
+plt.figure(4)
+plt.plot(ReZ,(jv(5,ReZ)),label='m=5',c='magenta')
+plt.plot(ReZ,(jv(6,ReZ)),label='m=6',c='lime')  
+plt.plot(ReZ,(jv(7,ReZ)),label='m=7',c='yellow')
+plt.plot(ReZ,(jv(8,ReZ)),label='m=8',c='orange')
+plt.plot(ReZ,(jv(9,ReZ)),label='m=9',c='blue')
+plt.plot(ReZ,(jv(10,ReZ)),label='m=10',c='aqua')   
+plt.xlabel('x')
+plt.ylabel('$Jm$(x)')      
+plt.title('Bessle Functions from m ranging from 5 to 10 (scipy)')
+plt.legend()   
+
+plt.figure(5)
+plt.plot(ReZ,(jv(0,ReZ)),label='Scipy',c='magenta')
+plt.plot(ReZ,(J(0,ReZ)),label='Simspons Rule',c='lime')   
+plt.xlabel('x')
+plt.ylabel('$Jm$(x)')      
+plt.title('Bessle Function (m=0)')
+plt.legend()   
+
+Errtot = np.mean(J(0,ReZ)-jv(0,ReZ))+np.mean(J(1,ReZ)-jv(1,ReZ))+np.mean(J(2,ReZ)-jv(2,ReZ))+np.mean(J(3,ReZ)-jv(3,ReZ))+np.mean(J(4,ReZ)-jv(4,ReZ))+np.mean(J(5,ReZ)-jv(5,ReZ))+np.mean(J(6,ReZ)-jv(6,ReZ))+np.mean(J(7,ReZ)-jv(7,ReZ))+np.mean(J(8,ReZ)-jv(8,ReZ))+np.mean(J(10,ReZ)-jv(10,ReZ))+np.mean(J(9,ReZ)-jv(9,ReZ))
+
+Errtot=Errtot/11
