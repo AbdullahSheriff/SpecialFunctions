@@ -1,0 +1,60 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.special import gamma
+
+def Gamma(z): #***#
+    i=0
+    def dF(x):
+        return (x**(z-1))*(np.e**(-x))
+    def F(x):
+        return dF(x/(1-x))/((1-x)**2) 
+    while i<=600:
+        N = 1000
+        a = 0.00009
+        b = .999999999                      
+        h = (b-a)/N
+        M=1
+        S=F(a)+F(b)
+        Simp1=0
+        Simp2=0
+        i=i+1
+        while M<(N/2):
+            Simp1=F(a+(2*M-1)*h)
+            S=S+4*Simp1
+            M=M+1
+            q=1
+        while q<((N/2)-1):
+            Simp2=2*F(a+2*h*q)
+            S=S+Simp2
+            q=q+1
+           
+        S=S*h/3
+        i=i+1
+        return S  
+    
+    
+ReZ=np.arange(0,10,0.1) 
+
+   
+
+plt.figure(1)
+plt.plot(ReZ,(Gamma(ReZ)),label='Simpsons Rule',c='magenta')
+plt.plot(ReZ,(gamma(ReZ)),label='Scipy Gamma function',c='lime')   
+plt.title('Gamma function')
+plt.xlabel('x')
+plt.ylabel('$\Gamma$ (x)')
+plt.legend()   
+
+
+plt.figure(2)
+#plt.plot(ReZ,(Gamma(ReZ)),label='Simpsons Rule',c='magenta')
+plt.plot(ReZ,(gamma(ReZ)),label='Scipy Gamma function',c='lime')   
+plt.title('Gamma function')
+plt.xlabel('x')
+plt.ylabel('$\Gamma$ (x)')
+plt.legend() 
+
+
+
+Err1=np.mean(Gamma(ReZ[1:])-gamma(ReZ[1:]))
+Err50=np.mean(Gamma(ReZ[50:])-gamma(ReZ[50:]))  
