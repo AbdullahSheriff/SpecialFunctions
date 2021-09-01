@@ -1,0 +1,229 @@
+import numpy as np
+from math import factorial
+import matplotlib.pyplot as plt
+from numpy import sqrt, cos, pi, sin, linspace, shape, zeros, meshgrid
+from scipy.special import legendre,assoc_laguerre,lpmn
+
+def Cartesian(r,theta,phi):
+
+    x = r*sin(theta)*cos(phi)
+    y = r*sin(theta)*sin(phi)   
+    z = r*cos(theta)
+    
+    return x, y, z
+
+
+# Leg' Poly
+
+def P(l, m, x):
+    Pmm = x/x
+    if m > 0:
+        sign = 1.0 if m % 2 == 0 else -1.0
+        Pmm = sign*pow(factorial(2*m-1)*(1.0-x**2),((m/2)))
+
+    if l == m:
+        return Pmm 
+
+    Pmm_1 = x*(2*m+1)*Pmm 
+    if l == m + 1:
+        return Pmm_1
+
+    for n in range(m+2,l+1):
+        Plm = (x*(2*n-1)*Pmm_1-(n+m-1)*Pmm)/(n-m)
+        Pmm = Pmm_1
+        Pmm_1 = Plm
+
+    return Pmm_1
+
+xrange=np.arange(-1,1,0.0001)
+plt.figure(1)
+plt.plot(xrange,P(0, 0, xrange),label='l=0')
+plt.plot(xrange,P(1, 0, xrange),label='l=1')
+plt.plot(xrange,P(2, 0, xrange),label='l=2')
+plt.plot(xrange,P(3, 0, xrange),label='l=3')
+plt.plot(xrange,P(4, 0, xrange),label='l=4')
+plt.plot(xrange,P(5, 0, xrange),label='l=5')
+plt.plot(xrange,P(6, 0, xrange),label='l=6')
+plt.xlabel('x')
+plt.ylabel('P(l,0,x)')
+plt.title('Legendre Polynomials with m=0 and L ranging from 0 to 6')
+plt.legend()   
+
+
+plt.figure(2)
+plt.plot(xrange,P(0, 1, xrange),label='l=0')
+plt.plot(xrange,P(1, 1, xrange),label='l=1')
+plt.plot(xrange,P(2, 1, xrange),label='l=2')
+plt.plot(xrange,P(3, 1, xrange),label='l=3')
+plt.plot(xrange,P(4, 1, xrange),label='l=4')
+plt.plot(xrange,P(5, 1, xrange),label='l=5')
+plt.plot(xrange,P(6, 1, xrange),label='l=6')
+plt.xlabel('x')
+plt.ylabel('P(l,1,x)')
+plt.title('Legendre Polynomials with m=1 and L ranging from 0 to 6')
+plt.legend() 
+
+
+plt.figure(3)
+plt.plot(xrange,P(0, 2, xrange),label='l=0')
+plt.plot(xrange,P(1, 2, xrange),label='l=1')
+plt.plot(xrange,P(2, 2, xrange),label='l=2')
+plt.plot(xrange,P(3, 2, xrange),label='l=3')
+plt.plot(xrange,P(4, 2, xrange),label='l=4')
+plt.plot(xrange,P(5, 2, xrange),label='l=5')
+plt.plot(xrange,P(6, 2, xrange),label='l=6')
+plt.xlabel('x')
+plt.ylabel('P(l,2,x)')
+plt.title('Legendre Polynomials with m=2 and L ranging from 0 to 6')
+plt.legend() 
+
+
+plt.figure(4)
+plt.plot(xrange,P(0, 3, xrange),label='l=0')
+plt.plot(xrange,P(1, 3, xrange),label='l=1')
+plt.plot(xrange,P(2, 3, xrange),label='l=2')
+plt.plot(xrange,P(3, 3, xrange),label='l=3')
+plt.plot(xrange,P(4, 3, xrange),label='l=4')
+plt.plot(xrange,P(5, 3, xrange),label='l=5')
+plt.plot(xrange,P(6, 3, xrange),label='l=6')
+plt.xlabel('x')
+plt.ylabel('P(l,3,x)')
+plt.title('Legendre Polynomials with m=3 and L ranging from 0 to 6')
+plt.legend() 
+
+
+plt.figure(5)
+plt.plot(xrange,P(0, 4, xrange),label='l=0')
+plt.plot(xrange,P(1, 4, xrange),label='l=1')
+plt.plot(xrange,P(2, 4, xrange),label='l=2')
+plt.plot(xrange,P(3, 4, xrange),label='l=3')
+plt.plot(xrange,P(4, 4, xrange),label='l=4')
+plt.plot(xrange,P(5, 4, xrange),label='l=5')
+plt.plot(xrange,P(6, 4, xrange),label='l=6')
+plt.xlabel('x')
+plt.ylabel('P(l,4,x)')
+plt.title('Legendre Polynomials with m=4 and L ranging from 0 to 6')
+plt.legend() 
+
+
+plt.figure(6)
+plt.plot(xrange,P(0, 5, xrange),label='l=0')
+plt.plot(xrange,P(1, 5, xrange),label='l=1')
+plt.plot(xrange,P(2, 5, xrange),label='l=2')
+plt.plot(xrange,P(3, 5, xrange),label='l=3')
+plt.plot(xrange,P(4, 5, xrange),label='l=4')
+plt.plot(xrange,P(5, 5, xrange),label='l=5')
+plt.plot(xrange,P(6, 5, xrange),label='l=6')
+plt.xlabel('x')
+plt.ylabel('P(l,5,x)')
+plt.title('Legendre Polynomials with m=5 and L ranging from 0 to 6')
+plt.legend() 
+
+plt.figure(7)
+plt.plot(xrange,P(0, 6, xrange),label='l=0')
+plt.plot(xrange,P(1, 6, xrange),label='l=1')
+plt.plot(xrange,P(2, 6, xrange),label='l=2')
+plt.plot(xrange,P(3, 6, xrange),label='l=3')
+plt.plot(xrange,P(4, 6, xrange),label='l=4')
+plt.plot(xrange,P(5, 6, xrange),label='l=5')
+plt.plot(xrange,P(6, 6, xrange),label='l=6')
+plt.xlabel('x')
+plt.ylabel('P(l,6,x)')
+plt.title('Legendre Polynomials with m=6 and L ranging from 0 to 6')
+plt.legend() 
+
+
+
+
+
+
+
+plt.figure(8)
+plt.plot(xrange,legendre(1)(xrange),label='l=0')
+plt.plot(xrange,legendre(2)(xrange),label='l=1')
+plt.plot(xrange,legendre(3)(xrange),label='l=2')
+plt.plot(xrange,legendre(4)(xrange),label='l=3')
+plt.plot(xrange,legendre(5)(xrange),label='l=4')
+plt.plot(xrange,legendre(6)(xrange),label='l=5')
+plt.plot(xrange,legendre(0)(xrange),label='l=6')
+plt.xlabel('x')
+plt.ylabel('P(l,0,x)')
+plt.title('Legendre Polynomials with m=0 and L ranging from 0 to 6 (scipy)')
+plt.legend() 
+
+Errtot=0
+for i in range(7):
+        Errtot=Errtot+np.mean(P(i,0,xrange)-legendre(i)(xrange))
+
+
+
+Errtot=Errtot/7
+
+
+
+
+
+
+
+
+
+
+
+
+
+# change these numbers to obtain diffrent spherical harmonics 
+
+l = int(17)
+
+m = int(7)
+
+# change these numbers to obtain diffrent spherical harmonics
+
+
+
+
+ #norm
+Const = sqrt(((2*l+1)*factorial(l-abs(m)))/(4*pi*factorial(l+abs(m))))
+
+
+phi = linspace(0,2*pi,500)
+theta = linspace(0,pi,500)
+Phi, theta = meshgrid(phi,theta)
+a, b = shape(Phi)
+Y    = zeros([a,b])
+
+
+# spherical harmonics 
+for i in range(0,a):
+    for j in range(0,b):
+
+        if m > 0:
+        
+            Y[i,j] = sqrt(2)*Const*cos(m*Phi[i,j])*P(l,m,cos(theta[i,j]))
+        
+        elif m < 0:
+        
+            Y[i,j] = sqrt(2)*Const*sin(abs(m)*Phi[i,j])*P(l,abs(m),cos(theta[i,j]))
+        
+        else:
+        
+            Y[i,j] = Const*P(l,0,cos(theta[i,j]))
+
+
+
+
+
+
+x, y, z = Cartesian(abs(Y), theta, Phi)
+
+
+
+
+fig = plt.figure()
+ax = fig.add_subplot( 111 , projection='3d')
+ax.plot_surface(x, y, z, cmap = 'gist_rainbow_r', edgecolor = 'black') #repmove edge color for the sharper fucntions (larger values of m and l)
+plt.title('Spherical Harmonics l={}m={}'.format(l,m), fontsize = 20)
+ax.set_xlabel('X', fontsize = 20)
+ax.set_ylabel('Y', fontsize = 20)
+ax.set_zlabel('Z', fontsize = 20)
+plt.show()
