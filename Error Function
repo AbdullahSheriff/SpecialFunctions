@@ -1,0 +1,58 @@
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.special import erf
+def ErFn(z): 
+    i=0
+    def F(t):
+        return (2/np.sqrt(np.pi))*(np.e**(-t**2))
+    while i<=600:
+        N = 10000
+        a = 0.0
+        b = z                    
+        h = (b-a)/N
+        M=1
+        S=F(a)+F(b)
+        Simp1=0
+        Simp2=0
+        i=i+1
+        while M<(N/2):
+            Simp1=F(a+(2*M-1)*h)
+            S=S+4*Simp1
+            M=M+1
+            q=1
+        while q<((N/2)-1):
+            Simp2=2*F(a+2*h*q)
+            S=S+Simp2
+            q=q+1
+           
+        S=S*h/3
+        i=i+1
+        return S 
+    
+    
+    
+ReZ=np.arange(-3,3,0.1)     
+
+
+plt.figure(1)
+plt.plot(ReZ,(ErFn(ReZ)),label='Simpsons Rule',c='magenta') 
+#plt.plot(ReZ,(erf(ReZ)),label='Scipy ERF',c='lime')  
+plt.title('Error function')
+plt.xlabel('x')
+plt.ylabel('$erf$ (x)')
+plt.legend()   
+plt.legend()   
+
+
+
+plt.figure(2)
+plt.plot(ReZ,(erf(ReZ)),label='Scipy ERF',c='lime')
+plt.title('Error function')
+plt.xlabel('x')
+plt.ylabel('$erf$ (x)')
+plt.legend()   
+
+
+
+Err1=np.mean(ErFn(ReZ)-erf(ReZ))
